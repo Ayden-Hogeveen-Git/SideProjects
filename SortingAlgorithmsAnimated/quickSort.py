@@ -17,7 +17,7 @@ import random
 import pygame
 
 # Window Variables
-width, height = 960, 480
+width, height = 1400, 480
 screen = pygame.display.set_mode((width, height), pygame.NOFRAME)
 pygame.display.set_caption("Visual QuickSort Algorithm")
 
@@ -31,7 +31,7 @@ class Algorithm:
         self.array = []
 
         # Value restrictions
-        self.amount = 480
+        self.amount = 1400
 
         self.min_value = 0
         self.max_value = self.amount + 1

@@ -19,6 +19,7 @@ Recursive Back Tracker Algorithm:
 """
 import random
 import pygame
+
 pygame.init()
 
 # Display and Screen Variables
@@ -129,6 +130,24 @@ class Cell:
         """
         neighbours = []
 
+        # if self.board.grid[self.row] == 0:
+        #     right = self.board.grid[self.row][self.col - 1]
+        #     bottom = self.board.grid[self.row + 1][self.col]
+        #     left = self.board.grid[self.row][self.col + 1]
+        # elif self.board.grid[self.row] == cell_amount:
+        #     top = self.board.grid[self.row - 1][self.col]
+        #     right = self.board.grid[self.row][self.col - 1]
+        #     left = self.board.grid[self.row][self.col + 1]
+        # elif self.board.grid[self.row][self.col] == 0:
+        #     top = self.board.grid[self.row - 1][self.col]
+        #     right = self.board.grid[self.row][self.col - 1]
+        #     bottom = self.board.grid[self.row + 1][self.col]
+        # elif self.board.grid[self.row][self.col] == cell_amount:
+        #     top = self.board.grid[self.row - 1][self.col]
+        #     bottom = self.board.grid[self.row + 1][self.col]
+        #     left = self.board.grid[self.row][self.col + 1]
+        # else:
+
         top = self.board.grid[self.row - 1][self.col]
         right = self.board.grid[self.row][self.col - 1]
         bottom = self.board.grid[self.row + 1][self.col]
@@ -143,6 +162,8 @@ class Cell:
             neighbours.append(bottom)
         if left and not left.visited:
             neighbours.append(left)
+
+        print(neighbours)
 
         # If the current cell has neighbours
         if len(neighbours) != 0:
@@ -170,6 +191,8 @@ class Main:
             for y in range(self.board.col_num):
                 cell = Cell(y, x)
                 self.board.grid[x][y] = cell
+
+        print(self.board.grid)
 
     @staticmethod
     def removeWalls(w1, w2):
