@@ -1,5 +1,5 @@
 # game.py
-from loader import Colour, Button
+from loader import Colour, Button, Cell
 import pygame
 pygame.init()
 
@@ -23,6 +23,15 @@ class Board:
         self.circle_width = width / self.dimensionX
         self.buffer = width / 16
 
+        self.cells = [
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ]
+
         self.game_state = [
             ["", "", "", "", "", "", "", ""],
             ["", "", "", "", "", "", "", ""],
@@ -35,17 +44,15 @@ class Board:
     def drawBoard(self):
         for y in range(self.dimensionY):
             for x in range(self.dimensionX):
-                if self.game_state[y][x] == "":
-                    pygame.draw.circle(screen, colour.white, (x * self.circle_width + self.buffer,
-                                       y * self.circle_width + self.buffer), self.circle_width / 4)
-                # 0 = Red Player
-                elif self.game_state[y][x] == "0":
-                    pygame.draw.circle(screen, colour.red, (x * self.circle_width + self.buffer,
-                                       y * self.circle_width + self.buffer), self.circle_width / 4)
-                # 0 = Yellow Player
-                elif self.game_state[y][x] == "1":
-                    pygame.draw.circle(screen, colour.yellow, (x * self.circle_width + self.buffer,
-                                       y * self.circle_width + self.buffer), self.circle_width / 4)
+                self.cells[y].append(Cell(x, y, self.circle_width, width // 16, colour.white, colour.red, colour.yellow))
+                self.cells[y][x].drawCell(screen)
+
+    def check(self, mouse_pos):
+        for y in range(self.dimensionY):
+            for x in range(self.dimensionX):
+                if self.cells[y][x].mouseOn(mouse_pos):
+                    print(f"ON {y} {x}")
+
 
 
 class Game:
@@ -58,7 +65,7 @@ class Game:
 
         self.board = Board()
 
-    def draw_scenes(self):
+    def draw_scenes(self, mouse_pos):
         if self.scene == 1:
             screen.fill(colour.white)
             self.playButton.drawButton(screen, font)
@@ -67,6 +74,7 @@ class Game:
             screen.fill(colour.grey)
 
             self.board.drawBoard()
+            self.board.check(mouse_pos)
 
         else:
             screen.fill(colour.black)
@@ -75,19 +83,20 @@ class Game:
     def run(self):
         while self.running:
             mouse_pos = pygame.mouse.get_pos()
-            self.draw_scenes()
+            self.draw_scenes(mouse_pos)
 
             for event in pygame.event.get():
+                # --- General Window --- #
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
+                # --- Scene 1 --- #
+                if self.playButton.mouseOn(mouse_pos):
+                    pass
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.playButton.mouseOn(mouse_pos):
                         self.scene += 1
-                if self.playButton.mouseOn(mouse_pos):
-                    pass
-
-
+                # --- Scene 2 --- #
 

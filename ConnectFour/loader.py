@@ -48,3 +48,32 @@ class Button:
                 self.border_width = 3
                 return True
         return False
+
+
+class Cell:
+    def __init__(self, x, y, button_width, buffer, colour1, colour2, colour3):
+        self.colour = Colour()
+        self.x = x
+        self.y = y
+        self.width = button_width
+        self.radius = self.width / 2
+        self.buffer = buffer
+        self.colour1 = colour1  # White
+        self.colour2 = colour2  # Red
+        self.colour3 = colour3  # Yellow
+        self.border_width = 2
+
+    def drawCell(self, screen):
+        pygame.draw.circle(screen, self.colour1, (self.x * self.width + self.buffer,
+                                                  self.y * self.width + self.buffer), self.width / 4)
+
+    def mouseOn(self, mouse_pos):
+        mouse_x = mouse_pos[0]
+        mouse_y = mouse_pos[1]
+
+        if self.x - self.radius < mouse_x < self.x + self.radius:
+            if self.y - self.radius < mouse_y < self.y + self.radius:
+                self.colour1 = self.colour2
+                self.border_width = 3
+                return True
+        return False
